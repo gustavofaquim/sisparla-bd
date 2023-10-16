@@ -64,6 +64,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `SisParla`.`ENDERECO` (
   `idEndereco` INT NOT NULL AUTO_INCREMENT,
   `Cidade` INT NOT NULL,
+   `CEP` VARCHAR(45) NULL DEFAULT NULL,
   `Bairro` VARCHAR(100) NULL,
   `Numero` VARCHAR(5) NULL DEFAULT NULL,
   `Lagradouro` VARCHAR(45) NOT NULL,
@@ -122,23 +123,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`APOIADOR` (
     REFERENCES `SisParla`.`SITUACAO_CADASTRO` (`idSituacao`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `SisParla`.`BAIRRO`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `SisParla`.`BAIRRO` (
-  `IdBairro` INT NOT NULL AUTO_INCREMENT,
-  `Cidade` INT NOT NULL,
-  `Nome` VARCHAR(45) NOT NULL,
-  `CEP` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`IdBairro`),
-  CONSTRAINT `fk_bairros_cidades1`
-    FOREIGN KEY (`Cidade`)
-    REFERENCES `SisParla`.`CIDADE` (`IdCidade`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 
