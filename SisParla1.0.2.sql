@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`CLASSIFICACAO` (
   `Descricao` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`IdClassificacao`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -38,7 +37,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`ESTADO` (
   `nome` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdEstado`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -54,7 +52,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`CIDADE` (
     FOREIGN KEY (`Estado`)
     REFERENCES `SisParla`.`ESTADO` (`IdEstado`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -64,10 +61,10 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `SisParla`.`ENDERECO` (
   `idEndereco` INT NOT NULL AUTO_INCREMENT,
   `Cidade` INT NOT NULL,
-   `CEP` VARCHAR(45) NULL DEFAULT NULL,
+  `CEP` VARCHAR(45) NULL DEFAULT NULL,
   `Bairro` VARCHAR(100) NULL,
   `Numero` VARCHAR(5) NULL DEFAULT NULL,
-  `Lagradouro` VARCHAR(45) NOT NULL,
+  `Lagradouro` VARCHAR(100) DEFAULT NULL,
   `Quadra` VARCHAR(45) NULL DEFAULT NULL,
   `PontoReferencia` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`idEndereco`),
@@ -77,7 +74,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`ENDERECO` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -89,7 +85,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`SITUACAO_CADASTRO` (
   `Descricao` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idSituacao`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -105,9 +100,10 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`APOIADOR` (
   `Email` VARCHAR(45) NULL DEFAULT NULL,
   `Religiao` VARCHAR(45) NULL,
   `Profissao` VARCHAR(45) NULL,
-  `Endereco` INT NOT NULL,
+  `Endereco` INT,
   `Classificacao` INT NOT NULL,
   `Situacao` INT NOT NULL,
+  `Filiacao` INT,
   `InformacaoAdicional` VARCHAR(300) NULL DEFAULT NULL,
   PRIMARY KEY (`IdApoiador`),
   CONSTRAINT `fk_apoiadores_classificacoes1`
@@ -120,9 +116,10 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`APOIADOR` (
     REFERENCES `SisParla`.`ENDERECO` (`idEndereco`),
   CONSTRAINT `fk_apoiadores_situacoes_cadastro1`
     FOREIGN KEY (`Situacao`)
-    REFERENCES `SisParla`.`SITUACAO_CADASTRO` (`idSituacao`))
+    REFERENCES `SisParla`.`SITUACAO_CADASTRO` (`idSituacao`),
+    FOREIGN KEY (`Filiacao`)
+    REFERENCES `SisParla`.`FILIACAO_PARTIDARIA` (`idFiliacao`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -134,7 +131,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`CATEGORIA` (
   `Descricao` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdCategoria`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -147,7 +143,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`REGRA_ACESSO` (
   `Descricao` VARCHAR(70) NULL DEFAULT NULL,
   PRIMARY KEY (`IdRegra`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -159,7 +154,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`STATUS_USUARIO` (
   `Descricao` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`IdStatus`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -182,7 +176,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`USUARIO` (
     FOREIGN KEY (`Status`)
     REFERENCES `SisParla`.`STATUS_USUARIO` (`IdStatus`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -214,7 +207,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`SITUACAO_DEMANDA` (
   `Descricao` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdSituacao`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -249,7 +241,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`DEMANDA` (
     FOREIGN KEY (`Responsavel`)
     REFERENCES `SisParla`.`USUARIO` (`IdUsuario`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
@@ -272,7 +263,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`ENTIDADE` (
   `Tipo` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdEntidade`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -283,18 +273,17 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`PARTIDO` (
     PRIMARY KEY (`IdPartido`));
 
 
+
 CREATE TABLE IF NOT EXISTS `SisParla`.`FILIACAO_PARTIDARIA`(
 	`IdFiliacao` INT NOT NULL AUTO_INCREMENT,
     `Partido` INT NOT NULL,
-    `Apoiador` INT NOT NULL,
     `DiretorioMunicipio` VARCHAR(90),
     `DiretorioUF` VARCHAR(3),
     `Zona` VARCHAR(10),
-    `Seção` VARCHAR(10),
-	`Cargo` VARCHAR(45) NULL DEFAULT NULL,
+    `Secao` VARCHAR(10),
+	`Cargo` VARCHAR(120) NULL DEFAULT NULL,
 	`Lideranca` CHAR(1) NULL DEFAULT 'N',
 	PRIMARY KEY (`IdFiliacao`),
-     FOREIGN KEY (`Apoiador`) REFERENCES `SisParla`.`APOIADOR` (`IdApoiador`),
 	 FOREIGN KEY (`Partido`) REFERENCES `SisParla`.`PARTIDO` (`IdPartido`)
 );
 
@@ -311,7 +300,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`EVENTO` (
   `Relacao` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`IdEvento`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -324,7 +312,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`PROFISSAO` (
   `Descricao` VARCHAR(60) NULL DEFAULT NULL,
   PRIMARY KEY (`IdProfissao`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -336,7 +323,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`RELIGIAO` (
   `Nome` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdReligiao`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -360,7 +346,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`RESPONSAVEL_EVENTO` (
     FOREIGN KEY (`Evento`)
     REFERENCES `SisParla`.`EVENTO` (`IdEvento`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -378,7 +363,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`TELEFONE` (
     FOREIGN KEY (`Apoiador`)
     REFERENCES `SisParla`.`APOIADOR` (`IdApoiador`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -388,7 +372,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `SisParla`.`VINCULACAO` (
   `IdVinculacao` INT NOT NULL AUTO_INCREMENT,
   `Apoiador` INT NOT NULL,
-  `Cargo` VARCHAR(45) NULL DEFAULT NULL,
+  `Cargo` VARCHAR(120) NULL DEFAULT NULL,
   `Entidade` INT NULL DEFAULT NULL,
   `Lideranca` CHAR(1) NULL DEFAULT NULL,
   PRIMARY KEY (`IdVinculacao`),
@@ -397,7 +381,6 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`VINCULACAO` (
     FOREIGN KEY (`Entidade`)
     REFERENCES `SisParla`.`ENTIDADE` (`IdEntidade`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -465,7 +448,6 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `SisParla`;
-INSERT INTO `SisParla`.`TIPO_ENTIDADE` (Tipo) VALUES ('Partido Político');
 INSERT INTO `SisParla`.`TIPO_ENTIDADE` (Tipo) VALUES ('Movimento Estudantil');
 INSERT INTO `SisParla`.`TIPO_ENTIDADE` (Tipo) VALUES ('Sindicato');
 INSERT INTO `SisParla`.`TIPO_ENTIDADE` (Tipo) VALUES ('Movimento Social');
@@ -477,39 +459,39 @@ COMMIT;
 START TRANSACTION;
 USE `SisParla`;
 
-INSERT INTO `SisParla`.`ENTIDADE` (Nome, Sigla, Tipo) VALUES
-('Partido dos Trabalhadores', 'PT', 'Partido Político'),
-('Partido da Social Democracia Brasileira', 'PSDB', 'Partido Político'),
-('Movimento Democrático Brasileiro', 'MDB', 'Partido Político'),
-('Partido Socialista Brasileiro', 'PSB', 'Partido Político'),
-('Partido Democrático Trabalhista', 'PDT', 'Partido Político'),
-('Partido Progressista', 'PP', 'Partido Político'),
-('Partido Comunista do Brasil', 'PCdoB', 'Partido Político'),
-('Partido Verde', 'PV', 'Partido Político'),
-('Rede Sustentabilidade', 'REDE', 'Partido Político'),
-('Partido Social Cristão', 'PSC', 'Partido Político'),
-('Partido Popular Socialista', 'PPS', 'Partido Político'),
-('Partido Republicano Brasileiro', 'PRB', 'Partido Político'),
-('Partido Social Liberal', 'PSL', 'Partido Político'),
-('Democratas', 'DEM', 'Partido Político'),
-('Partido Trabalhista Brasileiro', 'PTB', 'Partido Político'),
-('Partido Liberal', 'PL', 'Partido Político'),
-('Solidariedade', 'SD', 'Partido Político'),
-('Partido Social Democrático', 'PSD', 'Partido Político'),
-('Avante', 'AVANTE', 'Partido Político'),
-('Cidadania', 'CIDADANIA', 'Partido Político'),
-('Partido Socialismo e Liberdade', 'PSOL', 'Partido Político'),
-('Partido Republicano da Ordem Social', 'PROS', 'Partido Político'),
-('Partido Trabalhista Cristão', 'PTC', 'Partido Político'),
-('Partido da Mulher Brasileira', 'PMB', 'Partido Político'),
-('Partido Novo', 'NOVO', 'Partido Político'),
-('Partido Renovador Trabalhista Brasileiro', 'PRTB', 'Partido Político'),
-('Partido Social Liberal', 'PSL', 'Partido Político'),
-('Partido Socialista dos Trabalhadores Unificado', 'PSTU', 'Partido Político'),
-('Partido da Mobilização Nacional', 'PMN', 'Partido Político'),
-('Partido Comunista Brasileiro', 'PCB', 'Partido Político'),
-('Partido Humanista da Solidariedade', 'PHS', 'Partido Político'),
-('Partido Trabalhista do Brasil', 'PTdoB', 'Partido Político');
+INSERT INTO `SisParla`.`PARTIDO` (Nome, Sigla) VALUES
+('Partido dos Trabalhadores', 'PT'),
+('Partido da Social Democracia Brasileira', 'PSDB'),
+('Movimento Democrático Brasileiro', 'MDB'),
+('Partido Socialista Brasileiro', 'PSB'),
+('Partido Democrático Trabalhista', 'PDT'),
+('Partido Progressista', 'PP'),
+('Partido Comunista do Brasil', 'PCdoB'),
+('Partido Verde', 'PV'),
+('Rede Sustentabilidade', 'REDE'),
+('Partido Social Cristão', 'PSC'),
+('Partido Popular Socialista', 'PPS'),
+('Partido Republicano Brasileiro', 'PRB'),
+('Partido Social Liberal', 'PSL'),
+('Democratas', 'DEM'),
+('Partido Trabalhista Brasileiro', 'PTB'),
+('Partido Liberal', 'PL'),
+('Solidariedade', 'SD'),
+('Partido Social Democrático', 'PSD'),
+('Avante', 'AVANTE'),
+('Cidadania', 'CIDADANIA'),
+('Partido Socialismo e Liberdade', 'PSOL'),
+('Partido Republicano da Ordem Social', 'PROS'),
+('Partido Trabalhista Cristão', 'PTC'),
+('Partido da Mulher Brasileira', 'PMB'),
+('Partido Novo', 'NOVO'),
+('Partido Renovador Trabalhista Brasileiro', 'PRTB'),
+('Partido Social Liberal', 'PSL'),
+('Partido Socialista dos Trabalhadores Unificado', 'PSTU'),
+('Partido da Mobilização Nacional', 'PMN'),
+('Partido Comunista Brasileiro', 'PCB'),
+('Partido Humanista da Solidariedade', 'PHS'),
+('Partido Trabalhista do Brasil', 'PTdoB');
 
 INSERT INTO `SisParla`.`ENTIDADE` (Nome, Sigla, Tipo) VALUES
 ('Movimento dos Trabalhadores Rurais Sem Terra', 'MST', 'Movimento Social'),
