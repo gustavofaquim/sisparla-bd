@@ -276,6 +276,28 @@ AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
+CREATE TABLE IF NOT EXISTS `SisParla`.`PARTIDO` (
+	`IdPartido` INT NOT NULL AUTO_INCREMENT,
+    `Nome` VARCHAR(120) NOT NULL,
+    `Sigla` VARCHAR(45),
+    PRIMARY KEY (`IdPartido`));
+
+
+CREATE TABLE IF NOT EXISTS `SisParla`.`FILIACAO_PARTIDARIA`(
+	`IdFiliacao` INT NOT NULL AUTO_INCREMENT,
+    `Partido` INT NOT NULL,
+    `Apoiador` INT NOT NULL,
+    `DiretorioMunicipio` VARCHAR(90),
+    `DiretorioUF` VARCHAR(3),
+    `Zona` VARCHAR(10),
+    `Seção` VARCHAR(10),
+	`Cargo` VARCHAR(45) NULL DEFAULT NULL,
+	`Lideranca` CHAR(1) NULL DEFAULT 'N',
+	PRIMARY KEY (`IdFiliacao`),
+     FOREIGN KEY (`Apoiador`) REFERENCES `SisParla`.`APOIADOR` (`IdApoiador`),
+	 FOREIGN KEY (`Partido`) REFERENCES `SisParla`.`PARTIDO` (`IdPartido`)
+);
+
 -- -----------------------------------------------------
 -- Table `SisParla`.`EVENTO`
 -- -----------------------------------------------------
