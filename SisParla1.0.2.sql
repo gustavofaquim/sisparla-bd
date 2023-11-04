@@ -124,15 +124,14 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `SisParla`.`CATEGORIA`
+-- Table `SisParla`.`CATEGORIA_DEMANDA`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `SisParla`.`CATEGORIA` (
+CREATE TABLE IF NOT EXISTS `SisParla`.`CATEGORIA_DEMANDA` (
   `IdCategoria` INT NOT NULL AUTO_INCREMENT,
   `Descricao` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdCategoria`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
-
 
 -- -----------------------------------------------------
 -- Table `SisParla`.`REGRA_ACESSO`
@@ -225,12 +224,10 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`DEMANDA` (
   `EmendaParlamentar` CHAR(1) NOT NULL,
   `Historico` INT NULL DEFAULT NULL,
   PRIMARY KEY (`IdDemanda`),
-  CONSTRAINT `fk_demanda_apoiadores1`
-    FOREIGN KEY (`Apoiador`)
-    REFERENCES `SisParla`.`APOIADOR` (`IdApoiador`),
+    FOREIGN KEY (`Apoiador`) REFERENCES `SisParla`.`APOIADOR` (`IdApoiador`),
   CONSTRAINT `fk_demanda_categorias1`
     FOREIGN KEY (`Categoria`)
-    REFERENCES `SisParla`.`CATEGORIA` (`IdCategoria`),
+    REFERENCES `SisParla`.`CATEGORIA_DEMANDA` (`IdCategoria`),
   CONSTRAINT `fk_DEMANDA_HISTORICO_DEMANDA1`
     FOREIGN KEY (`Historico`)
     REFERENCES `SisParla`.`HISTORICO_DEMANDA` (`IdHistorico`),
@@ -545,8 +542,8 @@ INSERT INTO `SisParla`.`ESTADO` (UF, Nome) VALUES
 COMMIT;
 
 
-INSERT USUARIO VALUES 
-(NULL, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1);
+START TRANSACTION;
+USE `SisParla`;
 
 INSERT REGRA_ACESSO VALUES
 (NULL,'ADM', 'Administrador do Sistema');
@@ -554,6 +551,27 @@ INSERT REGRA_ACESSO VALUES
 
 INSERT STATUS_USUARIO VALUES
 (NULL, 'Ativo');
+
+
+INSERT USUARIO VALUES 
+(NULL, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1);
+
+
+INSERT SITUACAO_DEMANDA VALUES 
+(NULL, 'Aberta'),
+(NULL, 'Em atendimento'),
+(NULL, 'Aguardando parece'),
+(NULL, 'Incompleta'),
+(NULL, 'Concluida'); 
+
+
+INSERT CATEGORIA_DEMANDA VALUES
+(NULL, 'Reunião'),
+(NULL, 'Evento'),
+(NULl, 'Recursos'),
+(NULL, 'Emenda');
+
+COMMIT;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
