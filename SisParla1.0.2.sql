@@ -223,6 +223,7 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`DEMANDA` (
   `Situacao` INT NOT NULL,
   `Valor` DECIMAL(10,0) NULL DEFAULT NULL,
   `EmendaParlamentar` CHAR(1) NOT NULL,
+  `Data` DATE NOT NULL,
   `Historico` INT NULL DEFAULT NULL,
   PRIMARY KEY (`IdDemanda`),
     FOREIGN KEY (`Apoiador`) REFERENCES `SisParla`.`APOIADOR` (`IdApoiador`),
