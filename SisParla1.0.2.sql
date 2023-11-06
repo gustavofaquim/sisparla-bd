@@ -125,6 +125,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 -- -----------------------------------------------------
 -- Table `SisParla`.`CATEGORIA_DEMANDA`
+
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `SisParla`.`CATEGORIA_DEMANDA` (
   `IdCategoria` INT NOT NULL AUTO_INCREMENT,
@@ -216,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`DEMANDA` (
   `IdDemanda` INT NOT NULL AUTO_INCREMENT,
   `Assunto` VARCHAR(45) NOT NULL,
   `Descricao` VARCHAR(500) NULL DEFAULT NULL,
-  `Apoiador` INT NOT NULL,
+  `Apoiador` INT,
   `Categoria` INT NOT NULL,
   `Responsavel` INT NOT NULL,
   `Situacao` INT NOT NULL,
