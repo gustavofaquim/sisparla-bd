@@ -571,7 +571,8 @@ INSERT CATEGORIA_DEMANDA VALUES
 (NULL, 'Reunião'),
 (NULL, 'Evento'),
 (NULl, 'Recursos'),
-(NULL, 'Emenda');
+(NULL, 'Emenda'),
+(NULL, 'Outras');
 
 COMMIT;
 
