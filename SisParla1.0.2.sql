@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`DEMANDA` (
   `Descricao` VARCHAR(500) NULL DEFAULT NULL,
   `Apoiador` INT,
   `Categoria` INT NOT NULL,
-  `Responsavel` INT NOT NULL,
+  `Responsavel` INT,
   `Situacao` INT NOT NULL,
   `Valor` DECIMAL(10,0) NULL DEFAULT NULL,
   `EmendaParlamentar` CHAR(1) NOT NULL,
@@ -328,7 +328,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 -- Table `SisParla`.`RESPONSAVEL_EVENTO`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `SisParla`.`RESPONSAVEL_EVENTO` (
+/* CREATE TABLE IF NOT EXISTS `SisParla`.`RESPONSAVEL_EVENTO` (
   `IdResponsavel` INT NOT NULL AUTO_INCREMENT,
   `Apoiador` INT NULL DEFAULT NULL,
   `Evento` INT NULL DEFAULT NULL,
@@ -345,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `SisParla`.`RESPONSAVEL_EVENTO` (
     FOREIGN KEY (`Evento`)
     REFERENCES `SisParla`.`EVENTO` (`IdEvento`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb3; */
 
 
 -- -----------------------------------------------------
