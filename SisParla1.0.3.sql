@@ -2,8 +2,9 @@
 -- -----------------------------------------------------
 -- Schema SisParla
 -- -----------------------------------------------------
--- CREATE SCHEMA IF NOT EXISTS SisParla DEFAULT CHARACTER SET utf8mb4 ;
+CREATE SCHEMA IF NOT EXISTS SisParla DEFAULT CHARACTER SET utf8mb4 ;
 
+USE SisParla;
 -- -----------------------------------------------------
 -- Table CLASSIFICACAO
 -- -----------------------------------------------------
