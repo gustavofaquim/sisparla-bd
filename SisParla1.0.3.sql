@@ -5,11 +5,25 @@
 CREATE SCHEMA IF NOT EXISTS SisParla DEFAULT CHARACTER SET utf8mb4 ;
 
 USE SisParla;
+
+-- -----------------------------------------------------
+-- Table GRUPO
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS SISTEMA (
+IdSistema INT NOT NULL AUTO_INCREMENT,
+Nome VARCHAR(100) NOT NULL,
+Ativo VARCHAR(1) DEFAULT 'N',
+PRIMARY KEY(IdSistema)
+);
+
+
 -- -----------------------------------------------------
 -- Table CLASSIFICACAO
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS CLASSIFICACAO (
 IdClassificacao INT NOT NULL AUTO_INCREMENT,
+IdSistema INT NOT NULL,
 Descricao VARCHAR(45) NULL DEFAULT NULL,
 PRIMARY KEY (IdClassificacao))
 ENGINE = InnoDB
@@ -74,34 +88,6 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table APOIADOR
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS APOIADOR (
-IdApoiador INT NOT NULL AUTO_INCREMENT,
-Nome VARCHAR(45) NOT NULL,
-CPF VARCHAR(11) NULL DEFAULT NULL,
-Apelido VARCHAR(45) NULL DEFAULT NULL,
-DataNascimento DATE NOT NULL,
-Email VARCHAR(45) NULL DEFAULT NULL,
-Religiao VARCHAR(45) NULL,
-Profissao VARCHAR(45) NULL,
-Endereco INT,
-Classificacao INT NOT NULL,
-Situacao INT NOT NULL,
-Filiacao INT,
-InformacaoAdicional VARCHAR(300) NULL DEFAULT NULL,
-PRIMARY KEY (IdApoiador),
-FOREIGN KEY (Classificacao) REFERENCES CLASSIFICACAO (IdClassificacao)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-FOREIGN KEY (Endereco) REFERENCES ENDERECO (idEndereco), 
-FOREIGN KEY (Situacao) REFERENCES SITUACAO_CADASTRO (idSituacao),
-FOREIGN KEY (Filiacao) REFERENCES FILIACAO_PARTIDARIA (idFiliacao))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
 -- Table CATEGORIA_DEMANDA
 
 -- -----------------------------------------------------
@@ -120,7 +106,9 @@ CREATE TABLE IF NOT EXISTS REGRA_ACESSO (
   IdRegra INT NOT NULL AUTO_INCREMENT,
   Nome VARCHAR(20) NOT NULL,
   Descricao VARCHAR(70) NULL DEFAULT NULL,
-  PRIMARY KEY (IdRegra))
+  Sistema INT NOT NULL,
+  PRIMARY KEY (IdRegra),
+  FOREIGN KEY (Sistema) REFERENCES SISTEMA (IdSistema))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
@@ -147,13 +135,11 @@ CREATE TABLE IF NOT EXISTS USUARIO (
   Telefone VARCHAR(20) NULL DEFAULT NULL,
   RegraAcesso INT NOT NULL,
   Status INT NOT NULL,
+  Sistema INT NOT NULL,
   PRIMARY KEY (IdUsuario),
-  CONSTRAINT fk_USUARIO_REGRA_ACESSO1
-    FOREIGN KEY (RegraAcesso)
-    REFERENCES REGRA_ACESSO (IdRegra),
-  CONSTRAINT fk_USUARIO_STATUS_USUARIO1
-    FOREIGN KEY (Status)
-    REFERENCES STATUS_USUARIO (IdStatus))
+  FOREIGN KEY (RegraAcesso) REFERENCES REGRA_ACESSO (IdRegra),
+  FOREIGN KEY (Status) REFERENCES STATUS_USUARIO (IdStatus),
+  FOREIGN KEY (Sistema) REFERENCES SISTEMA (IdSistema))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
@@ -173,41 +159,6 @@ FOREIGN KEY (UsuarioDestino) REFERENCES USUARIO (IdUsuario))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
-
--- -----------------------------------------------------
--- Table SITUACAO_DEMANDA
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS SITUACAO_DEMANDA (
-IdSituacao INT NOT NULL AUTO_INCREMENT,
-Descricao VARCHAR(45) NOT NULL,
-PRIMARY KEY (IdSituacao))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table DEMANDA
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS DEMANDA (
-IdDemanda INT NOT NULL AUTO_INCREMENT,
-Assunto VARCHAR(45) NOT NULL,
-Descricao VARCHAR(500) NULL DEFAULT NULL,
-Apoiador INT,
-Categoria INT NOT NULL,
-Responsavel INT,
-Situacao INT NOT NULL,
-Valor DECIMAL(10,0) NULL DEFAULT NULL,
-EmendaParlamentar CHAR(1) NOT NULL,
-Data DATE NOT NULL,
-Historico INT NULL DEFAULT NULL,
-PRIMARY KEY (IdDemanda),
-FOREIGN KEY (Apoiador) REFERENCES APOIADOR (IdApoiador), 
-FOREIGN KEY (Categoria) REFERENCES CATEGORIA_DEMANDA (IdCategoria),
-FOREIGN KEY (Historico) REFERENCES HISTORICO_DEMANDA (IdHistorico),
-FOREIGN KEY (Situacao) REFERENCES SITUACAO_DEMANDA (IdSituacao),
-FOREIGN KEY (Responsavel) REFERENCES USUARIO (IdUsuario))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
 
 -- -----------------------------------------------------
 -- Table TIPO_ENTIDADE
@@ -258,6 +209,77 @@ PRIMARY KEY (IdFiliacao),
 FOREIGN KEY (Partido) REFERENCES PARTIDO (IdPartido)
 );
 
+
+-- -----------------------------------------------------
+-- Table APOIADOR
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS APOIADOR (
+IdApoiador INT NOT NULL AUTO_INCREMENT,
+Nome VARCHAR(45) NOT NULL,
+CPF VARCHAR(11) NULL DEFAULT NULL,
+Apelido VARCHAR(45) NULL DEFAULT NULL,
+DataNascimento DATE NOT NULL,
+Email VARCHAR(45) NULL DEFAULT NULL,
+Religiao VARCHAR(45) NULL,
+Profissao VARCHAR(45) NULL,
+Endereco INT,
+Classificacao INT NOT NULL,
+Situacao INT NOT NULL,
+Filiacao INT,
+Sistema INT(11) NOT NULL,
+InformacaoAdicional VARCHAR(300) NULL DEFAULT NULL,
+PRIMARY KEY (IdApoiador),
+FOREIGN KEY (Classificacao) REFERENCES CLASSIFICACAO (IdClassificacao),
+FOREIGN KEY (Endereco) REFERENCES ENDERECO (idEndereco), 
+FOREIGN KEY (Situacao) REFERENCES SITUACAO_CADASTRO (idSituacao),
+FOREIGN KEY (Filiacao) REFERENCES FILIACAO_PARTIDARIA (idFiliacao),
+FOREIGN KEY (Sistema) REFERENCES SISTEMA (IdSistema))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+
+
+
+-- -----------------------------------------------------
+-- Table SITUACAO_DEMANDA
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS SITUACAO_DEMANDA (
+IdSituacao INT NOT NULL AUTO_INCREMENT,
+Descricao VARCHAR(45) NOT NULL,
+PRIMARY KEY (IdSituacao))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table DEMANDA
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS DEMANDA (
+IdDemanda INT NOT NULL AUTO_INCREMENT,
+Assunto VARCHAR(45) NOT NULL,
+Descricao VARCHAR(500) NULL DEFAULT NULL,
+Apoiador INT,
+Categoria INT NOT NULL,
+Responsavel INT,
+Situacao INT NOT NULL,
+Valor DECIMAL(10,0) NULL DEFAULT NULL,
+EmendaParlamentar CHAR(1) NOT NULL,
+Data DATE NOT NULL,
+Historico INT NULL DEFAULT NULL,
+Sistema INT NOT NULL,
+PRIMARY KEY (IdDemanda),
+FOREIGN KEY (Apoiador) REFERENCES APOIADOR (IdApoiador), 
+FOREIGN KEY (Categoria) REFERENCES CATEGORIA_DEMANDA (IdCategoria),
+FOREIGN KEY (Historico) REFERENCES HISTORICO_DEMANDA (IdHistorico),
+FOREIGN KEY (Situacao) REFERENCES SITUACAO_DEMANDA (IdSituacao),
+FOREIGN KEY (Responsavel) REFERENCES USUARIO (IdUsuario),
+FOREIGN KEY (Sistema) REFERENCES SISTEMA (IdSistema))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+
 -- -----------------------------------------------------
 -- Table EVENTO
 -- -----------------------------------------------------
@@ -269,7 +291,9 @@ Responsavel VARCHAR(45) NULL DEFAULT NULL,
 Local VARCHAR(45) NULL DEFAULT NULL,
 DataHorario DATETIME NULL DEFAULT NULL,
 Relacao VARCHAR(45) NULL DEFAULT NULL,
-PRIMARY KEY (IdEvento))
+Sistema INT NOT NULL,
+PRIMARY KEY (IdEvento),
+FOREIGN KEY (Sistema) REFERENCES SISTEMA (IdSistema))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
@@ -323,10 +347,8 @@ Cargo VARCHAR(120) NULL DEFAULT NULL,
 Entidade INT NULL DEFAULT NULL,
 Lideranca CHAR(1) NULL DEFAULT NULL,
 PRIMARY KEY (IdVinculacao),
-FOREIGN KEY (Apoiador)
-REFERENCES APOIADOR (IdApoiador),
-FOREIGN KEY (Entidade)
-REFERENCES ENTIDADE (IdEntidade))
+FOREIGN KEY (Apoiador) REFERENCES APOIADOR (IdApoiador),
+FOREIGN KEY (Entidade) REFERENCES ENTIDADE (IdEntidade))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
@@ -492,11 +514,16 @@ INSERT INTO ESTADO (UF, Nome) VALUES
 COMMIT;
 
 
+/* INSERÇÃO DE DADOS ESPECIFICOS POR SISTEMA...  */
 START TRANSACTION;
 
 
+INSERT SISTEMA VALUES 
+(NULL, 'Mandato Adriana Accorsi', 'S' )
+
+
 INSERT REGRA_ACESSO VALUES
-(NULL,'ADM', 'Administrador do Sistema');
+(NULL,'ADM', 'Administrador do Sistema', 1);
 
 
 INSERT STATUS_USUARIO VALUES
@@ -504,7 +531,7 @@ INSERT STATUS_USUARIO VALUES
 
 
 INSERT USUARIO VALUES 
-(NULL, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1);
+(NULL, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1, 1);
 
 
 INSERT SITUACAO_DEMANDA VALUES 
