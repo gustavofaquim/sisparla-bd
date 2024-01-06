@@ -1,4 +1,5 @@
 
+START TRANSACTION;
 -- -----------------------------------------------------
 -- Schema SisParla
 -- -----------------------------------------------------
@@ -25,6 +26,7 @@ FontPrincipal VARCHAR(40),
 FontSecundaria VARCHAR(40),
 Logo VARCHAR(500),
 Sistema INT NOT NULL,
+PRIMARY KEY(IdCustomizacao),
 FOREIGN KEY (Sistema) REFERENCES SISTEMA (IdSistema)
 );
 
@@ -34,7 +36,6 @@ FOREIGN KEY (Sistema) REFERENCES SISTEMA (IdSistema)
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS CLASSIFICACAO (
 IdClassificacao INT NOT NULL AUTO_INCREMENT,
-IdSistema INT NOT NULL,
 Descricao VARCHAR(45) NULL DEFAULT NULL,
 PRIMARY KEY (IdClassificacao))
 ENGINE = InnoDB
@@ -352,6 +353,7 @@ FOREIGN KEY (Entidade) REFERENCES ENTIDADE (IdEntidade))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
+COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table CLASSIFICACAO
@@ -369,8 +371,8 @@ COMMIT;
 -- -----------------------------------------------------
 -- Data for table PROFISSAO
 -- -----------------------------------------------------
-START TRANSACTION;
 
+START TRANSACTION;
 
 INSERT INTO PROFISSAO (NOME) VALUES ('Desenvolvedor');
 INSERT INTO PROFISSAO (NOME) VALUES ('Analista de Requisitos');
@@ -519,7 +521,7 @@ START TRANSACTION;
 
 
 INSERT SISTEMA VALUES 
-(NULL, 'Mandato Adriana Accorsi', 'S' )
+(NULL, 'Mandato Adriana Accorsi', 'S' );
 
 
 INSERT REGRA_ACESSO VALUES
