@@ -353,6 +353,16 @@ FOREIGN KEY (Entidade) REFERENCES ENTIDADE (IdEntidade))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
+
+CREATE TABLE IF NOT EXISTS DESPESA(
+IdDespesa INT NOT NULL AUTO_INCREMENT,
+Descricao VARCHAR(250) NOT NULL,
+Detalhamento VARCHAR(800) NOT NULL,
+
+PRIMARY KEY (IdDespesa)
+);
+
+
 COMMIT;
 
 -- -----------------------------------------------------
