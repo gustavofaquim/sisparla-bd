@@ -365,12 +365,15 @@ PRIMARY KEY(IdPessoaJuridicaFisica),
 FOREIGN KEY (Endereco) REFERENCES ENDERECO (idEndereco)
 );
 
+
 CREATE TABLE IF NOT EXISTS ORIGEM_DESPESA(
 IdOrigem INT NOT NULL AUTO_INCREMENT,
 Descricao VARCHAR(100), /* Mandato, pre-campanha, campanha */
 Ano YEAR,
 PRIMARY KEY(IdOrigem)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS TIPO_DESPESA(
 IdTipo INT NOT NULL AUTO_INCREMENT,
@@ -379,11 +382,13 @@ PRIMARY KEY(IdTipo)
 );
 
 
+
 CREATE TABLE IF NOT EXISTS DESPESA(
 IdDespesa INT NOT NULL AUTO_INCREMENT,
 Descricao VARCHAR(250) NOT NULL,
 Detalhamento VARCHAR(800) NOT NULL,
 Valor DECIMAL,
+Data date NOT NULL,
 PessoaJuridicaFisica INT NOT NULL,
 Origem INT NOT NULL,
 Tipo INT NOT NULL,
@@ -591,5 +596,15 @@ INSERT CATEGORIA_DEMANDA VALUES
 (NULl, 'Recursos'),
 (NULL, 'Emenda'),
 (NULL, 'Outras');
+
+
+INSERT INTO PessoaJuridicaFisica (Nome, Endereco, Telefone, Tipo, Documento) 
+VALUES ('G&F Assessoria', 1, '33333333', 'Pessoa Juridica', '45454545454545');
+
+INSERT INTO ORIGEM_DESPESA (Descricao, Ano) VALUES ('Mandato', '2023');
+
+INSERT INTO TIPO_DESPESA (Descricao) VALUES ('Assessoria Tecnologica');
+
+INSERT INTO DESPESA (Descricao, Valor, Data, PessoaJuridicaFisica, Origem, Tipo ) VALUES ('Sistema de gerenciamento do mandato e limpeza de dados', 125.000, '2024-01-15',1,1,1  );
 
 COMMIT;
