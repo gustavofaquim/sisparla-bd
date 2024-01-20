@@ -567,19 +567,22 @@ START TRANSACTION;
 
 
 INSERT SISTEMA VALUES 
-(NULL, 'Mandato Adriana Accorsi', 'S' );
+(1, 'Mandato Adriana Accorsi', 'S' );
 
 
 INSERT REGRA_ACESSO VALUES
-(NULL,'ADM', 'Administrador do Sistema');
+(1,'ADM', 'Administrador do Sistema');
 
 
 INSERT STATUS_USUARIO VALUES
-(NULL, 'Ativo');
+(1, 'Ativo');
+
+
+
 
 
 INSERT USUARIO VALUES 
-(NULL, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1);
+(1, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1);
 
 
 INSERT SITUACAO_DEMANDA VALUES 
@@ -598,8 +601,8 @@ INSERT CATEGORIA_DEMANDA VALUES
 (NULL, 'Outras');
 
 
-INSERT INTO PessoaJuridicaFisica (Nome, Endereco, Telefone, Tipo, Documento) 
-VALUES ('G&F Assessoria', 1, '33333333', 'Pessoa Juridica', '45454545454545');
+INSERT INTO PessoaJuridicaFisica (IdPessoaJuridicaFisica, Nome, Endereco, Telefone, Tipo, Documento) 
+VALUES (NULL,'G&F Assessoria', 1, '33333333', 'Pessoa Juridica', '45454545454545');
 
 INSERT INTO ORIGEM_DESPESA (Descricao, Ano) VALUES ('Mandato', '2023');
 
