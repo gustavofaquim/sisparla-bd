@@ -48,7 +48,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 CREATE TABLE IF NOT EXISTS ESTADO (
 IdEstado INT NOT NULL AUTO_INCREMENT,
 UF CHAR(2) NOT NULL,
-nome VARCHAR(45) NOT NULL,
+Nome VARCHAR(45) NOT NULL,
 PRIMARY KEY (IdEstado))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
@@ -244,8 +244,6 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 
-
-
 -- -----------------------------------------------------
 -- Table SITUACAO_DEMANDA
 -- -----------------------------------------------------
@@ -382,7 +380,6 @@ PRIMARY KEY(IdTipo)
 );
 
 
-
 CREATE TABLE IF NOT EXISTS DESPESA(
 IdDespesa INT NOT NULL AUTO_INCREMENT,
 Descricao VARCHAR(250) NOT NULL,
@@ -398,215 +395,5 @@ FOREIGN KEY (Origem) REFERENCES ORIGEM_DESPESA (IdOrigem),
 FOREIGN KEY (Tipo) REFERENCES TIPO_DESPESA (IdTipo)
 );
 
-
 COMMIT;
 
--- -----------------------------------------------------
--- Data for table CLASSIFICACAO
--- -----------------------------------------------------
-START TRANSACTION;
-
-INSERT INTO CLASSIFICACAO (IdClassificacao, Descricao) VALUES (DEFAULT, 'Simpatizante');
-INSERT INTO CLASSIFICACAO (IdClassificacao, Descricao) VALUES (DEFAULT, 'Vota');
-INSERT INTO CLASSIFICACAO (IdClassificacao, Descricao) VALUES (DEFAULT, 'Vota e pede voto');
-INSERT INTO CLASSIFICACAO (IdClassificacao, Descricao) VALUES (DEFAULT, 'Vota, pede voto e faz doação');
-INSERT INTO CLASSIFICACAO (IdClassificacao, Descricao) VALUES (DEFAULT, 'Vota, pede voto, faz doação e indica doador');
-
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table PROFISSAO
--- -----------------------------------------------------
-
-START TRANSACTION;
-
-INSERT INTO PROFISSAO (NOME) VALUES ('Desenvolvedor');
-INSERT INTO PROFISSAO (NOME) VALUES ('Analista de Requisitos');
-INSERT INTO PROFISSAO (NOME) VALUES ('Professor(a)');
-INSERT INTO PROFISSAO (NOME) VALUES ('Analista Contábil');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table ESTADO
--- -----------------------------------------------------
-START TRANSACTION;
-
-INSERT INTO ESTADO (IdEstado, UF, nome) VALUES (NULL, 'GO', 'Goiás');
-
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table CIDADE
--- -----------------------------------------------------
-START TRANSACTION;
-
-INSERT INTO CIDADE (IdCidade, Nome, Estado) VALUES (NULL, 'Ceres', 1);
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table SITUACAO_CADASTRO
--- -----------------------------------------------------
-START TRANSACTION;
-
-INSERT INTO SITUACAO_CADASTRO (idSituacao, Descricao) VALUES (DEFAULT, 'Ativo');
-INSERT INTO SITUACAO_CADASTRO (idSituacao, Descricao) VALUES (DEFAULT, 'Inativo');
-INSERT INTO SITUACAO_CADASTRO (idSituacao, Descricao) VALUES (DEFAULT, 'Pendente');
-INSERT INTO SITUACAO_CADASTRO (idSituacao, Descricao) VALUES (DEFAULT, 'Dados Incompletos');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table SITUACAO_CADASTRO
--- -----------------------------------------------------
-START TRANSACTION;
-
-INSERT INTO TIPO_ENTIDADE (Tipo) VALUES ('Movimento Estudantil');
-INSERT INTO TIPO_ENTIDADE (Tipo) VALUES ('Sindicato');
-INSERT INTO TIPO_ENTIDADE (Tipo) VALUES ('Movimento Social');
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table ENTIDADE
--- -----------------------------------------------------
-START TRANSACTION;
-
-
-INSERT INTO PARTIDO (Nome, Sigla) VALUES
-('Partido dos Trabalhadores', 'PT'),
-('Partido da Social Democracia Brasileira', 'PSDB'),
-('Movimento Democrático Brasileiro', 'MDB'),
-('Partido Socialista Brasileiro', 'PSB'),
-('Partido Democrático Trabalhista', 'PDT'),
-('Partido Progressista', 'PP'),
-('Partido Comunista do Brasil', 'PCdoB'),
-('Partido Verde', 'PV'),
-('Rede Sustentabilidade', 'REDE'),
-('Partido Social Cristão', 'PSC'),
-('Partido Popular Socialista', 'PPS'),
-('Partido Republicano Brasileiro', 'PRB'),
-('Partido Social Liberal', 'PSL'),
-('Democratas', 'DEM'),
-('Partido Trabalhista Brasileiro', 'PTB'),
-('Partido Liberal', 'PL'),
-('Solidariedade', 'SD'),
-('Partido Social Democrático', 'PSD'),
-('Avante', 'AVANTE'),
-('Cidadania', 'CIDADANIA'),
-('Partido Socialismo e Liberdade', 'PSOL'),
-('Partido Republicano da Ordem Social', 'PROS'),
-('Partido Trabalhista Cristão', 'PTC'),
-('Partido da Mulher Brasileira', 'PMB'),
-('Partido Novo', 'NOVO'),
-('Partido Renovador Trabalhista Brasileiro', 'PRTB'),
-('Partido Social Liberal', 'PSL'),
-('Partido Socialista dos Trabalhadores Unificado', 'PSTU'),
-('Partido da Mobilização Nacional', 'PMN'),
-('Partido Comunista Brasileiro', 'PCB'),
-('Partido Humanista da Solidariedade', 'PHS'),
-('Partido Trabalhista do Brasil', 'PTdoB');
-
-INSERT INTO ENTIDADE (Nome, Sigla, Tipo) VALUES
-('Movimento dos Trabalhadores Rurais Sem Terra', 'MST', 'Movimento Social'),
-('Marcha das Vadias', '', 'Movimento Social'),
-('Movimento Passe Livre', 'MPL', 'Movimento Social'),
-('Levante Popular da Juventude', '', 'Movimento Social'),
-('Quilombo Urbano', '', 'Movimento Social'),
-('Movimento Negro Unificado', 'MNU', 'Movimento Social'),
-('Marcha das Margaridas', '', 'Movimento Social'),
-('Movimento LGBT', '', 'Movimento Social'),
-('Marcha Mundial das Mulheres', 'MMM', 'Movimento Social'),
-('Coletivo de Mulheres Negras Feministas', '', 'Movimento Social');
-
-
-
-COMMIT;
--- -----------------------------------------------------
--- Data for table ESTADO
--- -----------------------------------------------------
-START TRANSACTION;
-
-
-INSERT INTO ESTADO (UF, Nome) VALUES
-('AC', 'Acre'),
-('AL', 'Alagoas'),
-('AP', 'Amapá'),
-('AM', 'Amazonas'),
-('BA', 'Bahia'),
-('CE', 'Ceará'),
-('DF', 'Distrito Federal'),
-('ES', 'Espírito Santo'),
-('GO', 'Goiás'),
-('MA', 'Maranhão'),
-('MT', 'Mato Grosso'),
-('MS', 'Mato Grosso do Sul'),
-('MG', 'Minas Gerais'),
-('PA', 'Pará'),
-('PB', 'Paraíba'),
-('PR', 'Paraná'),
-('PE', 'Pernambuco'),
-('PI', 'Piauí'),
-('RJ', 'Rio de Janeiro'),
-('RN', 'Rio Grande do Norte'),
-('RS', 'Rio Grande do Sul'),
-('RO', 'Rondônia'),
-('RR', 'Roraima'),
-('SC', 'Santa Catarina'),
-('SP', 'São Paulo'),
-('SE', 'Sergipe'),
-('TO', 'Tocantins');
-COMMIT;
-
-
-/* INSERÇÃO DE DADOS ESPECIFICOS POR SISTEMA...  */
-START TRANSACTION;
-
-
-INSERT SISTEMA VALUES 
-(1, 'Mandato Adriana Accorsi', 'S' );
-
-
-INSERT REGRA_ACESSO VALUES
-(1,'ADM', 'Administrador do Sistema');
-
-
-INSERT STATUS_USUARIO VALUES
-(1, 'Ativo');
-
-
-
-INSERT USUARIO VALUES 
-(1, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1);
-
-
-
-INSERT SITUACAO_DEMANDA VALUES 
-(NULL, 'Aberta'),
-(NULL, 'Em atendimento'),
-(NULL, 'Aguardando parece'),
-(NULL, 'Incompleta'),
-(NULL, 'Concluida'); 
-
-
-INSERT CATEGORIA_DEMANDA VALUES
-(NULL, 'Reunião'),
-(NULL, 'Evento'),
-(NULl, 'Recursos'),
-(NULL, 'Emenda'),
-(NULL, 'Outras');
-
-
-INSERT INTO PessoaJuridicaFisica (IdPessoaJuridicaFisica, Nome, Endereco, Telefone, Tipo, Documento) 
-VALUES (NULL,'G&F Assessoria', 1, '33333333', 'Pessoa Juridica', '45454545454545');
-
-INSERT INTO ORIGEM_DESPESA (Descricao, Ano) VALUES ('Mandato', '2023');
-
-INSERT INTO TIPO_DESPESA (Descricao) VALUES ('Assessoria Tecnologica');
-
-INSERT INTO DESPESA (Descricao, Valor, Data, PessoaJuridicaFisica, Origem, Tipo ) VALUES ('Sistema de gerenciamento do mandato e limpeza de dados', 125.000, '2024-01-15',1,1,1  );
-
-COMMIT;
