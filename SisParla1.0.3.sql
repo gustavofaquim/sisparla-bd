@@ -7,10 +7,6 @@ CREATE SCHEMA IF NOT EXISTS SisParla DEFAULT CHARACTER SET utf8mb4 ;
 
 USE SisParla;
 
--- -----------------------------------------------------
--- Table GRUPO
--- -----------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS SISTEMA (
 IdSistema INT NOT NULL AUTO_INCREMENT,
 Nome VARCHAR(100) NOT NULL,
@@ -216,6 +212,17 @@ PRIMARY KEY (IdFiliacao),
 FOREIGN KEY (Partido) REFERENCES PARTIDO (IdPartido)
 );
 
+-- -----------------------------------------------------
+-- Table GRUPO_APOIADORES
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS GRUPO (
+IdGrupo INT NOT NULL AUTO_INCREMENT,
+Nome VARCHAR(400),
+Responsavel INT,
+PRIMARY KEY (IdGrupo),
+FOREIGN KEY (Responsavel) REFERENCES USUARIO (IdUsuario)
+);
+
 
 -- -----------------------------------------------------
 -- Table APOIADOR
@@ -234,11 +241,15 @@ Classificacao INT NOT NULL,
 Situacao INT NOT NULL,
 Filiacao INT,
 InformacaoAdicional VARCHAR(300) NULL DEFAULT NULL,
+Responsavel INT,
+Grupo INT,
 PRIMARY KEY (IdApoiador),
 FOREIGN KEY (Classificacao) REFERENCES CLASSIFICACAO (IdClassificacao),
 FOREIGN KEY (Endereco) REFERENCES ENDERECO (idEndereco), 
 FOREIGN KEY (Situacao) REFERENCES SITUACAO_CADASTRO (idSituacao),
-FOREIGN KEY (Filiacao) REFERENCES FILIACAO_PARTIDARIA (idFiliacao))
+FOREIGN KEY (Filiacao) REFERENCES FILIACAO_PARTIDARIA (idFiliacao),
+FOREIGN KEY (Responsavel) REFERENCES USUARIO (IdUsuario),
+FOREIGN KEY (Grupo) REFERENCES GRUPO (IdGrupo))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 

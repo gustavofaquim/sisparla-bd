@@ -17,7 +17,7 @@ COMMIT;
 
 START TRANSACTION;
 
-INSERT INTO Profissao (Nome) VALUES
+INSERT INTO PROFISSAO (Nome) VALUES
 ('Engenheiro'),
 ('Médico'),
 ('Professor'),
@@ -114,7 +114,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 
-INSERT Cidade (IdCidade, Nome, Estado) VALUES 
+INSERT CIDADE (IdCidade, Nome, Estado) VALUES 
 (1, 'Afonso Cláudio', 8),
 (2, 'Água Doce do Norte', 8),
 (3, 'Águia Branca', 8),
@@ -1140,6 +1140,7 @@ START TRANSACTION;
 INSERT INTO TIPO_ENTIDADE (Tipo) VALUES ('Movimento Estudantil');
 INSERT INTO TIPO_ENTIDADE (Tipo) VALUES ('Sindicato');
 INSERT INTO TIPO_ENTIDADE (Tipo) VALUES ('Movimento Social');
+INSERT INTO TIPO_ENTIDADE (Tipo) VALUES ('Outros');
 COMMIT;
 
 -- -----------------------------------------------------
@@ -1238,8 +1239,7 @@ COMMIT;
 START TRANSACTION;
 
 
-INSERT SISTEMA VALUES 
-(1, 'Mandato Adriana Accorsi', 'S' );
+-- INSERT SISTEMA VALUES (1, 'Mandato Adriana Accorsi', 'S' );
 
 
 INSERT REGRA_ACESSO VALUES
@@ -1259,26 +1259,25 @@ INSERT USUARIO VALUES
 INSERT SITUACAO_DEMANDA VALUES 
 (NULL, 'Aberta'),
 (NULL, 'Em atendimento'),
-(NULL, 'Aguardando parece'),
-(NULL, 'Incompleta'),
+(NULL, 'Aguardando parecer'),
 (NULL, 'Concluida'); 
 
 
 INSERT CATEGORIA_DEMANDA VALUES
 (NULL, 'Reunião'),
 (NULL, 'Evento'),
-(NULl, 'Recursos'),
+(NULl, 'Doação'),
 (NULL, 'Emenda'),
 (NULL, 'Outras');
 
 
-INSERT INTO PessoaJuridicaFisica (IdPessoaJuridicaFisica, Nome, Endereco, Telefone, Tipo, Documento) 
-VALUES (NULL,'G&F Assessoria', 1, '33333333', 'Pessoa Juridica', '45454545454545');
+-- INSERT INTO CREDOR (IdCredor, Nome, Endereco, Telefone, Tipo, Documento) 
+-- VALUES (NULL,'Faquim - Consultoria em Tecnologia da Informação', 1, '33333333', 'Pessoa Juridica', '45454545454545');
 
-INSERT INTO ORIGEM_DESPESA (Descricao, Ano) VALUES ('Mandato', '2023');
+-- INSERT INTO ORIGEM_DESPESA (Descricao, Ano) VALUES ('Mandato', '2023');
 
-INSERT INTO TIPO_DESPESA (Descricao) VALUES ('Assessoria Tecnologica');
+-- INSERT INTO TIPO_DESPESA (Descricao) VALUES ('Assessoria Tecnologica');
 
-INSERT INTO DESPESA (Descricao, Valor, Data, PessoaJuridicaFisica, Origem, Tipo ) VALUES ('Sistema de gerenciamento do mandato e limpeza de dados', 125.000, '2024-01-15',1,1,1  );
+-- INSERT INTO DESPESA (Descricao, Valor, Data, PessoaJuridicaFisica, Origem, Tipo ) VALUES ('Sistema de gerenciamento do mandato e limpeza de dados', 125.000, '2024-01-15',1,1,1  );
 
 COMMIT;
