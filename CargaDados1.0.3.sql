@@ -1271,6 +1271,19 @@ INSERT CATEGORIA_DEMANDA VALUES
 (NULL, 'Outras');
 
 
+INSERT TIPO_DESPESA VALUES
+(NULL,'Aluguel de veículos'),
+(NULL,'Divulgação da atividade parlamentar'),
+(NULL,'Manutenção de escritório'),
+(NULL,'Combustíveis'),
+(NULL,'Passagem Aérea'),
+(NULL,'Outros');
+
+INSERT ORIGEM_DESPESA VALUES 
+(NULL, 'Mandato', '2024'),
+(NULL, 'Pré-Candidatura Prefeitura', '2024'),
+(NULL, 'Candidatura Prefeitura', '2024')
+
 -- INSERT INTO CREDOR (IdCredor, Nome, Endereco, Telefone, Tipo, Documento) 
 -- VALUES (NULL,'Faquim - Consultoria em Tecnologia da Informação', 1, '33333333', 'Pessoa Juridica', '45454545454545');
 
