@@ -2,6 +2,9 @@
 -- -----------------------------------------------------
 -- Data for table CLASSIFICACAO
 -- -----------------------------------------------------
+
+USE SisParla;
+
 START TRANSACTION;
 INSERT INTO CLASSIFICACAO (Descricao) VALUES 
 ('Simpatizante'),
@@ -1282,7 +1285,9 @@ INSERT TIPO_DESPESA VALUES
 INSERT ORIGEM_DESPESA VALUES 
 (NULL, 'Mandato', '2024'),
 (NULL, 'Pré-Candidatura Prefeitura', '2024'),
-(NULL, 'Candidatura Prefeitura', '2024')
+(NULL, 'Candidatura Prefeitura', '2024');
+
+COMMIT;
 
 -- INSERT INTO CREDOR (IdCredor, Nome, Endereco, Telefone, Tipo, Documento) 
 -- VALUES (NULL,'Faquim - Consultoria em Tecnologia da Informação', 1, '33333333', 'Pessoa Juridica', '45454545454545');
@@ -1293,4 +1298,3 @@ INSERT ORIGEM_DESPESA VALUES
 
 -- INSERT INTO DESPESA (Descricao, Valor, Data, PessoaJuridicaFisica, Origem, Tipo ) VALUES ('Sistema de gerenciamento do mandato e limpeza de dados', 125.000, '2024-01-15',1,1,1  );
 
-COMMIT;
