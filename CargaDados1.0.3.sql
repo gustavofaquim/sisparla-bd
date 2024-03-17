@@ -1255,9 +1255,12 @@ INSERT STATUS_USUARIO VALUES
 
 
 INSERT USUARIO VALUES 
-(1, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1);
+(1, 'Gustavo Faquim', 'gustavofaquim', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', '62996828796', 1, 1),
+(2, 'Marcos Soares', 'marcos.soares', '$2b$10$DxQHuPrQgnv3L/Zr5nUvau.c8ynnL3M.KtxJK2w4QZ8YDUwTRlLWa', NULL, 2, 1);
 
 
+INSERT GRUPO  (Nome, Responsavel) VALUES 
+('Estudantes UFG', 2);
 
 INSERT SITUACAO_DEMANDA VALUES 
 (NULL, 'Aberta'),
