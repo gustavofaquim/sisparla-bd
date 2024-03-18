@@ -1246,7 +1246,8 @@ START TRANSACTION;
 
 
 INSERT REGRA_ACESSO VALUES
-(1,'ADM', 'Administrador do Sistema');
+(1,'ADM', 'Administrador do Sistema'),
+(2, 'AC1', 'Acessor Nível I');
 
 
 INSERT STATUS_USUARIO VALUES
