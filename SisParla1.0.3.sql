@@ -225,6 +225,15 @@ FOREIGN KEY (Responsavel) REFERENCES USUARIO (IdUsuario)
 
 
 -- -----------------------------------------------------
+-- Table ORIGEM_CADASTRO
+-- -----------------------------------------------------
+CREATE TABLE ORIGEM_CADASTRO (
+idOrigem INT NOT NULL AUTO_INCREMENT,
+Descricao VARCHAR(300),
+PRIMARY KEY(idOrigem)
+);
+
+-- -----------------------------------------------------
 -- Table APOIADOR
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS APOIADOR (
@@ -241,17 +250,21 @@ Classificacao INT NOT NULL,
 Situacao INT NOT NULL,
 Filiacao INT,
 InformacaoAdicional VARCHAR(300) NULL DEFAULT NULL,
+DataInsercao DATE,
 Responsavel INT,
 Grupo INT,
+Origem INT,
 PRIMARY KEY (IdApoiador),
 FOREIGN KEY (Classificacao) REFERENCES CLASSIFICACAO (IdClassificacao),
 FOREIGN KEY (Endereco) REFERENCES ENDERECO (idEndereco), 
 FOREIGN KEY (Situacao) REFERENCES SITUACAO_CADASTRO (idSituacao),
 FOREIGN KEY (Filiacao) REFERENCES FILIACAO_PARTIDARIA (idFiliacao),
 FOREIGN KEY (Responsavel) REFERENCES USUARIO (IdUsuario),
-FOREIGN KEY (Grupo) REFERENCES GRUPO (IdGrupo))
+FOREIGN KEY (Grupo) REFERENCES GRUPO (IdGrupo),
+FOREIGN KEY (Origem) REFERENCES ORIGEM_CADASTRO (idOrigem))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
+
 
 
 
