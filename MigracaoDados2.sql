@@ -1,4 +1,4 @@
- CREATE TABLE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO (
+ CREATE TABLE ADRIANA_DADOS_APOIADORES_MIGRACAO (
 	id VARCHAR(255),
     nome VARCHAR(255),
     apelido VARCHAR(255),
@@ -79,11 +79,28 @@ SET A.Endereco = M.migracao_endereco
 WHERE nascimento IS NOT NULL AND (municipio = '977') AND migracao_endereco IS NOT NULL ;    
 
 
+SELECT * FROM ORIGEM_DADOS;
 
 SELECT * FROM endereco;
-SELECT * FROM Apoiador;
+SELECT COUNT(idApoiador) FROM Apoiador ;
 
-INSERT endereco (Cidade, CEP, Bairro, Logradouro, Complemento, PontoReferencia)
+SELECT COUNT(IdTelefone) FROM TELEFONE;
+
+
+SELECT COUNT(idEndereco) FROM ENDERECO;
+
+DELETE E2 FROM ENDERECO E2
+INNER JOIN ENDERECO E1
+WHERE E1.IdEndereco <  E2.IdEndereco 
+AND E2.cidade = E1.cidade
+AND E2.cep = E1.cep
+AND E2.bairro = E1.bairro
+AND E2.logradouro = E1.logradouro
+AND E2.complemento = E1.complemento;
+
+
+
+-- INSERT endereco (Cidade, CEP, Bairro, Logradouro, Complemento, PontoReferencia)
 SELECT 
 DISTINCT
     M.municipio,
@@ -94,8 +111,10 @@ DISTINCT
     NULL
 FROM 
 	ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
-	INNER JOIN APOIADOR A ON A.Nome = M.nome AND A.DataNascimento = M.nascimento
-WHERE nascimento IS NOT NULL AND (municipio = '977');
+	-- INNER JOIN APOIADOR A ON A.Nome = M.nome AND A.DataNascimento = M.nascimento
+	INNER JOIN CIDADE C ON M.municipio = C.IdCidade
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND bairro IS NOT NULL;
 
 
 
@@ -126,41 +145,70 @@ WHERE nascimento IS NOT NULL AND telefonecelular IS NOT NULL  AND length(telefon
 
 
 
-
-UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO
-SET telefonecelular =  REPLACE(
+/* Ajusta telefone celular */
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO M
+SET M.telefonecelular =  REPLACE(
     REPLACE(
       REPLACE(
-        REPLACE(telefonecelular, ' ', ''), 
+        REPLACE(M.telefonecelular, ' ', ''), 
       '(', ''), 
     ')', ''), 
-  '-', '') 
-WHERE nascimento IS NOT NULL AND telefonecelular IS NOT NULL  AND length(telefonecelular) > 8;
+  '-', '')
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR) AND telefonecelular IS NOT NULL AND telefonecelular NOT IN ('');
+-- WHERE nascimento IS NOT NULL AND telefonecelular IS NOT NULL  AND length(telefonecelular) > 8;
+-- WHERE Obs = 'Migração Sistema Antigo - 08/04/2024' AND telefonecelular IS NOT NULL  AND length(telefonecelular) > 8;
 
 
 
 
 
-INSERT telefone (Numero, Apoiador, WhatsApp, Principal)
+/* Inserir na tabela telefone */
+INSERT TELEFONE (Numero, Apoiador, WhatsApp, Principal)
 SELECT 
 M.telefonecelular,
 A.IdApoiador,
 'N',
 'S'
 FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
-INNER JOIN APOIADOR A ON A.Nome = M.nome AND A.DataNascimento = M.nascimento
-WHERE nascimento IS NOT NULL AND telefonecelular IS NOT NULL AND length(M.telefonecelular) > 8;
+INNER JOIN APOIADOR A ON A.Nome = M.nome 
+WHERE M.telefonecelular IS NOT NULL AND M.telefonecelular <> '' AND M.telefonecelular <> '00000000000' AND A.IdApoiador IS NOT NULL; 
 
 
+	
 
-INSERT APOIADOR (Nome, DataNascimento, Email, Classificacao, Situacao, OBS) 
+
+-- AND length(M.telefonecelular) > 8 AND Obs = 'Migração Sistema Antigo - 08/04/2024';
+
 SELECT 
-nome, nascimento, email, '2', '4', 'Migração Sistema Antigo - 04/04/2024'
-FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO
-WHERE nascimento IS NOT NULL;
+* 
+FROM APOIADOR; 
+SELECT * FROM ENDERECO;
+SELECT * FROM TELEFONE;
 
+SELECT * FROM APOIADOR_MIGRACAO;
 
+DELETE FROM APOIADOR;
 SELECT * FROM APOIADOR;
+
+
+
+-- INSERT APOIADOR_MIGRACAO (Nome, DataNascimento, Email, Endereco, Classificacao, Situacao, OBS) 
+SELECT 
+nome, nascimento, email, migracao_endereco, '2', '4', 'Migração Sistema Antigo - 09/04/2024'
+FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M;
+-- WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024');
+
+
+SELECT
+M.telefonecelular 
+-- *
+-- COUNT(IdApoiador) 
+FROM APOIADOR A 
+INNER JOIN ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M ON A.Nome = M.Nome
+WHERE Obs = 'Migração Sistema Antigo - 08/04/2024';
+
+
+SELECT * FROM TELEFONE;
 
 
 SELECT 
@@ -179,7 +227,7 @@ SET NASCIMENTO = IF(SUBSTRING(nascimento, 1, 2) > '23',
     STR_TO_DATE(CONCAT('20', nascimento), '%Y/%d/%m'));
   
 
-INSERT ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO
+-- INSERT ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO
 SELECT 
 	-- COUNT(id)
      *
@@ -191,8 +239,195 @@ WHERE
     AND municipio IS NOT NULL;   
 
 
+SELECT 
+-- COUNT(id)
+* 
+FROM
+ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M 
+WHERE Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND Endereco IS NOT NULL AND Endereco <> '';
+
+SELECT 
+C.IdCidade,
+C.Nome,
+M.Municipio
+-- * 
+FROM
+ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M 
+INNER JOIN CIDADE C ON C.Nome = M.municipio
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND Endereco IS NOT NULL AND Endereco <> '';
+
+
+SELECT * FROM ENDERECO;
+
+-- INSERT ENDERECO (Cidade, CEP, Bairro, Logradouro, Complemento, PontoReferencia)
+SELECT 
+DISTINCT
+	C.IdCidade,
+    M.cep,
+    M.bairro,
+    M.endereco,
+    M.complemento,
+    NULL
+FROM 
+	ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M 
+INNER JOIN CIDADE C ON C.IdCidade = M.municipio
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND Endereco IS NOT NULL AND Endereco <> '';
+
+
+/*
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+INNER JOIN CIDADE C ON C.Nome = M.municipio
+SET M.Municipio = E.Cidade
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND Endereco IS NOT NULL AND Endereco <> ''; 
+*/
+
+/*
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+INNER JOIN CIDADE C ON C.Nome = M.municipio
+SET M.Municipio = C.IdCidade
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024'); 
+*/
+
+/* MUDA DE NOME PARA ID NA COLUNA MUNICIPIO - CIDADE */
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+INNER JOIN CIDADE C ON C.Nome = M.municipio
+SET M.Municipio = C.IdCidade
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024'); 
+
+/*
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+SET M.municipio = TRIM(LEADING ' ' FROM M.municipio);
+*/
+
+/*
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO
+SET municipio = NULL
+WHERE municipio = 'GOGO';
+ -- 613
+*/
+
+
+-- INSERT Cidade VALUES (NULL, 'Trindade', 9);
+
+INSERT Cidade VALUES 
+(NULL, 'Itumbiara', 9);
+
+
+SELECT * FROM Cidade
+WHERE Nome Like '%Itumbiara%';
+
+SELECT * FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+-- INNER JOIN CIDADE C ON  M.municipio <> C.IdCidade
+-- SET M.Municipio = E.Cidade
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND M.municipio NOT IN (SELECT IdCidade FROM CIDADE)
+AND M.municipio NOT IN (SELECT Nome FROM CIDADE);
+
+
+
+
+SELECT  * FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+INNER JOIN ENDERECO E ON E.Cidade = M.municipio AND E.Cep = M.cep AND E.Bairro = M.Bairro AND E.Complemento = M.complemento AND E.Logradouro = M.endereco
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND migracao_endereco IS NULL;
+
+UPDATE
+ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+INNER JOIN ENDERECO E ON E.Cidade = M.municipio AND E.Cep = M.cep AND E.Bairro = M.Bairro AND E.Complemento = M.complemento AND E.Logradouro = M.endereco
+SET M.migracao_endereco = E.IdEndereco
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR WHERE Obs = 'Migração Sistema Antigo - 04/04/2024')
+AND migracao_endereco IS NULL;
+
+
+SELECT * FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO;
+
+
+SELECT * FROM ENDERECO;
+
+-- INSERT endereco (Cidade, CEP, Bairro, Logradouro, Complemento, PontoReferencia)
+SELECT  
+	DISTINCT
+    M.municipio,
+    M.cep,
+    M.bairro,
+    M.endereco,
+    M.complemento,
+    NULL
+FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+WHERE (CEP <> '' AND BAIRRO <> '') AND municipio IS NOT NULL
+AND municipio IN (SELECT IdCidade FROM Cidade);
+
+-- aqui
+
+SELECT 
+	M.*
+FROM 
+	ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+    INNER JOIN ENDERECO E ON E.CEP = M.CEP AND E.Bairro = M.Bairro AND M.Endereco = E.Logradouro
+    INNER JOIN TELEFONE T ON T.Apoiador
+WHERE (E.CEP <> '' AND E.BAIRRO <> '') AND municipio IS NOT NULL;
+
+
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO M
+INNER JOIN ENDERECO E ON E.CEP = M.CEP AND E.Bairro = M.Bairro AND M.Endereco = E.Logradouro
+SET M.migracao_endereco = E.IdEndereco
+WHERE (E.CEP <> '' AND E.BAIRRO <> '') AND municipio IS NOT NULL;
+
+
+SELECT * FROM ENDERECO;
+
+
+-- 977
+SELECT * FROM APOIADOR A
+INNER JOIN endereco e on A.Endereco = e.IdEndereco
+INNER JOIN Cidade c ON C.IdCidade = e.Cidade;
+
+
+
+
+SELECT * FROM APOIADOR_MIGRACAO;
+
+/* Tabela temporaria com os dados para serem migrados para o servidor */
+INSERT APOIADOR_MIGRACAO
+SELECT 
+	*
+FROM
+	APOIADOR A
+WHERE
+	A.Obs =  'Migração Sistema Antigo - 08/04/2024';
+
+
+-- DELETE FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO;
+
+SELECT * FROM ADRIANA_DADOS_APOIADORES_MIGRACAO M
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR);
+
+
+UPDATE ADRIANA_DADOS_APOIADORES_MIGRACAO M
+SET telefonecelular = telefone
+WHERE M.Nome NOT IN (SELECT Nome FROM APOIADOR )
+AND telefone NOT IN ('') AND telefonecelular IN ('');
+
+SELECT 
+COUNT(id)
+-- nome, nascimento, email, '2', '4', 'Migração Sistema Antigo - 04/04/2024'
+FROM ADRIANA_DADOS_APOIADORES_MIGRACAO_ANDAMENTO
+WHERE nascimento IS NOT NULL;
+
 -- 1999-11-15  
 
 -- 18826 -> esse
 -- 22743
 -- 25462
+
+
+
+ALTER TABLE APOIADOR
+ADD COLUMN ApoiadorVinculado INT,
+ADD CONSTRAINT fk_apoiador_vinculado
+    FOREIGN KEY (ApoiadorVinculado)
+    REFERENCES APOIADOR(IdApoiador);
