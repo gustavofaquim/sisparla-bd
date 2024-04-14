@@ -1291,6 +1291,10 @@ INSERT ORIGEM_DESPESA VALUES
 (NULL, 'Pré-Candidatura Prefeitura', '2024'),
 (NULL, 'Candidatura Prefeitura', '2024');
 
+
+INSERT RELIGIAO (Nome) VALUES
+('Evangélico'), ('Católico'), ('Testemunha de Jeová');
+
 COMMIT;
 
 -- INSERT INTO CREDOR (IdCredor, Nome, Endereco, Telefone, Tipo, Documento) 
