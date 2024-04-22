@@ -35,10 +35,57 @@ CREATE TABLE IF NOT EXISTS ADRIANA_DADOS_APOIADORES_MIGRACAO (
 
 
 
+CREATE TABLE ADRIANA_DADOS_PROFISSOES(
+Id VARCHAR(1000),
+Nome VARCHAR(300)
+);
+
+
+ALTER TABLE APOIADOR DROP FOREIGN KEY fk_apoiador_vinculado;
+
+ALTER TABLE APOIADOR Modify ApoiadorVinculado VARCHAR(120);
+
+
+
+SELECT 
+    A.IdApoiador,
+    A.Nome,
+    DATE_FORMAT(A.DataNascimento, '%d/%m/%Y') AS DataNascimento,
+    A.Email,
+    P.Nome AS Profissao,
+    T.Numero AS Telefone,
+    C.Nome AS Cidade,
+    E.Bairro,
+    E.Logradouro,
+    E.Complemento,
+    A2.Nome AS Vinculacao
+FROM 
+    APOIADOR A
+    LEFT JOIN ENDERECO E ON E.IdEndereco = A.Endereco
+    LEFT JOIN CIDADE C ON C.IdCidade = E.Cidade
+    LEFT JOIN TELEFONE T ON T.Apoiador = A.IdApoiador
+    LEFT JOIN APOIADOR A2 ON A2.IdApoiador = A.ApoiadorVinculado
+    LEFT JOIN PROFISSAO P ON P.IdProfissao = A.Profissao
+INTO OUTFILE 'resultado.csv'
+CHARACTER SET utf8
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+
+
 LOAD DATA INFILE 'banco_de_dados_final.csv'
 INTO TABLE ADRIANA_DADOS_APOIADORES_MIGRACAO
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 (id,nome,apelido,telefone,telefonecelular,telefonecelular2,zap,zap2,profissao,nascimento,apoiador,email,religiao,cep,endereco,bairro,municipio,uf,movimentosocial,movimento,zona,abranzona,liderid,partido,origem,status,classe,liga);
+
+
+
+LOAD DATA INFILE 'profissao.csv'
+INTO TABLE ADRIANA_DADOS_PROFISSOES
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(id,Nome);
 
 
