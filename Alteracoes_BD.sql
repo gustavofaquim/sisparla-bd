@@ -54,3 +54,18 @@ SELECT * FROM USUARIO;
 UPDATE USUARIO
 SET Avatar = 'woman_03.png'
 WHERE IdUsuario = 2;
+
+
+-------------------------------------------------
+
+
+SELECT * FROM DESPESA;
+
+ALTER TABLE DESPESA ADD Recorrente boolean; 
+
+DESC DESPESA; 
+
+ALTER TABLE DESPESA MODIFY Valor DECIMAL(10, 2);
+
+
+
