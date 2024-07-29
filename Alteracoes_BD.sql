@@ -5,16 +5,18 @@ ALTER TABLE ENTIDADE MODIFY Sigla VARCHAR(45);
 ALTER TABLE ENTIDADE MODIFY Tipo VARCHAR(45);
 
 
-CREATE TABLE Avatar
+CREATE TABLE AVATAR
 (
 IdAvatar INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-Avatar VARCHAR(800) NOT NULL,
+Avatar VARCHAR(800) NOT NULL
 );
 
 
-ALTER TABLE Usuario ADD Avatar VARCHAR(800);
 
-INSERT Avatar (Avatar) VALUES
+
+ALTER TABLE USUARIO ADD Avatar VARCHAR(800);
+
+INSERT AVATAR (Avatar) VALUES
 ('man_01.png'),
 ('man_02.png'),
 ('man_03.png'),
@@ -31,7 +33,7 @@ INSERT Avatar (Avatar) VALUES
 ('man_14.png');
 
 
-INSERT Avatar (Avatar) VALUES
+INSERT AVATAR (Avatar) VALUES
 ('woman_01.png'),
 ('woman_02.png'),
 ('woman_03.png'),
@@ -46,14 +48,10 @@ INSERT Avatar (Avatar) VALUES
 ('woman_12.png'),
 ('woman_13.png');
 
-SELECT * FROM Avatar;
+SELECT * FROM AVATAR;
 
 
-SELECT * FROM USUARIO;
 
-UPDATE USUARIO
-SET Avatar = 'woman_03.png'
-WHERE IdUsuario = 2;
 
 
 -------------------------------------------------
@@ -61,11 +59,13 @@ WHERE IdUsuario = 2;
 
 SELECT * FROM DESPESA;
 
-ALTER TABLE DESPESA ADD Recorrente boolean; 
-
 DESC DESPESA; 
 
 ALTER TABLE DESPESA MODIFY Valor DECIMAL(10, 2);
-
+ALTER TABLE DESPESA MODIFY Detalhamento VARCHAR(900);
+ALTER TABLE DESPESA MODIFY Data Date;
+ALTER TABLE DESPESA MODIFY Credor Int;
+ALTER TABLE DESPESA ADD Mes VARCHAR(10);
+ALTER TABLE DESPESA ADD Ano year;
 
 
