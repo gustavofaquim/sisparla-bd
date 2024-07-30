@@ -102,6 +102,7 @@ VALUES
 ('Assessor Cadastro');
 
 
+
 CREATE TABLE PERFIL_PERMISSAO(
 IdPerfil INT,
 IdTela INT,
