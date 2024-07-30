@@ -75,3 +75,61 @@ ALTER TABLE DESPESA MODIFY Origem INT;
 ALTER TABLE DESPESA MODIFY Tipo INT;
 
 
+
+
+-----------------------------------------
+
+
+
+create table CAMPANHA (
+	Id INT not null auto_increment primary key,
+	Nome VARCHAR(600) not null,
+	Ano YEAR
+);
+
+create table APOIADOR_CAMPANHA(
+	Id INT not null auto_increment primary key,
+	IdApoiador INT not null,
+	IdCampanha INT not null,
+	DataUltimaVisita DATE,
+	DataProximaVisita DATE,
+	QuantidadeVisita INT default(0),
+	RecebeuMaterial BOOLEAN,
+	Doador BOOLEAN,
+	foreign key (IdApoiador) references APOIADOR (IdApoiador),
+	foreign key (IdCampanha) references CAMPANHA (Id)
+);
+
+
+create table ARRECADACAO(
+	Id INT not null auto_increment primary key,
+	IdApoiador INT,
+	Nome VARCHAR(600),
+	IdCampanha INT,
+	Valor numeric(10,2),
+	Descricao MEDIUMTEXT,
+	Data DATE,
+	foreign key (IdApoiador) references APOIADOR (IdApoiador),
+	foreign key (IdCampanha) references CAMPANHA (Id)
+);
+
+
+
+insert  CAMPANHA (Nome, Ano) values ('Prefeitura de Goiânia', 2024);
+
+select * from APOIADOR where NOME like '%Faquim%';
+
+insert APOIADOR_CAMPANHA (IdApoiador, IdCampanha) values (26,1);
+
+insert ARRECADACAO (IdApoiador, IdCampanha, Valor) values (26,1, 2000.87);
+
+insert ARRECADACAO (Nome, IdCampanha, Valor) values ('Grafica Zao',1, 10000.24);
+
+insert ARRECADACAO (Nome, Descricao) values ('Supermecado VItoria','Doação dos materiais para realização do jantar de arredacação');
+
+
+DROP TABLE ARRECADACAO;
+
+
+
+
