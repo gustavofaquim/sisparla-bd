@@ -143,6 +143,8 @@ CREATE TABLE Localizacao (
 
 
 
+SELECT * FROM APOIADOR;
+
 
 26
 INSERT Localizacao (IdApoiador,Coordenada) VALUES (26, ST_GeomFromText('POINT(-16.278586432915183 -48.9871946479799)'));
