@@ -152,3 +152,12 @@ INSERT Localizacao (IdApoiador,Coordenada) VALUES (26, ST_GeomFromText('POINT(-1
 -16.278586432915183, -48.9871946479799
 
 
+
+
+-------
+
+
+alter table EVENTO add Data DATE;
+alter table EVENTO add Horario TIME;
+alter table EVENTO drop DataHorario;
+
